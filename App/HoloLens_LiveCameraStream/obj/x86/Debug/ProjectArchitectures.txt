@@ -1,2 +1,0 @@
-D:\GitHub\HoloLens-LiveStream\App\HoloLens_LiveCameraStream\HoloLens_LiveCameraStream.csproj;x86
-D:\USC_Courses\CSCI599_new\Code\myStuff\HoloLens_LiveCameraStream\App\GeneratedProjects\UWP\Assembly-CSharp\Assembly-CSharp.csproj;x86
