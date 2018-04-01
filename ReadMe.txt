@@ -7,6 +7,31 @@ Use this project to stream the live feed of HoloLens's PoV camera to your system
  c) REMOVE ANY FIREWALL RESTRICTIONS - allow Unity to send and receive messages
 3. The folder "App" already has a generated project, just deploy on HoloLens
 
+Allow Unity Communiction through Firewall
+1. Do a ping test first. 
+Example: ping 192.168.137.1
+
+2. If fails, for the Sender station/PC, go to
+Control Panel\Network and Internet\Network and Sharing Center\Advanced sharing settings
+"Turn on Network Discovery" with 
+"Turn on automatic setup of network connected devices"
+"Turn on File and Printer Sharing"
+
+3. First, try disabling Firewall and test if it works. Then, check if it works for the following settings:
+Firewall Off for Private | Off for Public on sender
+Firewall Off for Private |  On for Public on sender
+Firewall  On for Private |  On for Public on sender
+This will help in narrowing down what rules to add or delete in Step 4
+
+3. Allow Unity Editor through Firewall
+ a) Go to Control Panel\System and Security\Windows Defender Firewall
+ b) Click on "Allow and app or feature through Firewall"
+ c) Click on "Change Settings" and check "Unity Editor" for "Private" (Do Public only if you are sure)
+ d) Go to advanced settings for Windows Firewall
+ e) Go to "Inbound rules"
+ f) There will 1 or 2 rules for Unity Editor and most probably, they will be "Enabled" and will be set to "Block"
+ g) Disable the rule that blocks Unity Editor for Private Connections
+
 References
 
 1. UDP Communication
