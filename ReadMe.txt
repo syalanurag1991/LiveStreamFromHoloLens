@@ -5,7 +5,6 @@ Use this project to stream the live feed of HoloLens's PoV camera to your system
  a) HoloLens is a client that looks for a receiving server
  b) Enter the IP address and Port Number of the receving server (which can be another Unity app)
  c) REMOVE ANY FIREWALL RESTRICTIONS - allow Unity to send and receive messages
-3. The folder "App" already has a generated project, just deploy on HoloLens
 
 References
 

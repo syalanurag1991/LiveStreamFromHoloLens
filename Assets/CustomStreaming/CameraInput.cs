@@ -23,19 +23,75 @@ using CustomStreaming;
 
 public class CameraInput : MonoBehaviour  {
 
-	public bool enableLog;
-	public bool enableLogData = false;
+#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
 
+#endif
+	VideoPanel videoPanelScript;
+
+	// Get camera texture
+	public Texture returnTexture
+	{
+#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
+		get
+		{
+			return videoPanelScript.resizedFrameTexture;
+		}
+#else
+		get
+		{
+			return webCamTexture;
+		}
+#endif
+	}
+
+	//Soure1: https://stackoverflow.com/questions/42717713/unity-live-video-streaming
+	//For storing current texture
+	//public RawImage myImage;
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	void Start()
+	{
+		Application.runInBackground = true;
+		stop = true;
+
+		videoPanelScript = FindObjectOfType<VideoPanel>();
+
+#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
+		receiverSocket = new StreamSocket();
+#else
+		receiverClient = new TcpClient();
+		StartCoroutine(initAndWaitForWebCamTexture());
+#endif
+	}
+
+	private void Update()
+	{
+		if (stop) {
+			stop = !videoPanelScript.startSending;
+			if(!stop)
+				StartCoroutine(SendData());
+		}
+	}
+		
+
+	/// Desired resolution for capture
+	public int targetWidth = 640;
+	public int targetHeight = 480;
+
+	/// Acheived resolution for capture
+	int finalWidth;
+	int finalHeight;
+	int finalFrameRate;
+
+#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)		
+#else
+	//from Source1
 	/// Number of frames per second to sample.  Use 0 and call ProcessFrame() manually to run manually.
 	/// Enable/Disable to start/stop the sampling
 	public float sampleRate = 20;
 
 	/// Should the selected camera be front facing?
 	public bool isFrontFacing = true;
-
-	/// Desired resolution width for capture
-	public int targetWidth = 640;
-	public int targetHeight = 480;
 
 	/// List of WebCams accessible to Unity
 	protected WebCamDevice[] devices;
@@ -46,69 +102,6 @@ public class CameraInput : MonoBehaviour  {
 	/// Web Cam texture
 	private WebCamTexture webCamTexture;
 
-	// Get camera texture
-	public Texture Texture
-	{
-		get
-		{
-			return webCamTexture;
-		}
-	}
-
-	/// The rotation of the camera
-	public float videoRotationAngle
-	{
-		get
-		{
-			return webCamTexture.videoRotationAngle;
-		}
-	}
-
-	//Soure1: https://stackoverflow.com/questions/42717713/unity-live-video-streaming
-	//For storing current texture
-	//public RawImage myImage;
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void Start()
-	{
-		//from Soure1
-		Application.runInBackground = true;
-
-#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
-		receiverSocket = new StreamSocket();
-		//receiverClient = new StreamSocket();
-#else
-		receiverClient = new TcpClient();
-#endif
-
-		StartCoroutine(initAndWaitForWebCamTexture());
-	}
-
-	private void Update()
-	{
-
-	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void LOG(string messsage)
-	{
-		if (enableLog)
-			Debug.Log(messsage);
-	}
-
-	void LOGDATA(string messsage)
-	{
-		if (enableLogData)
-			Debug.Log(messsage);
-	}
-
-	void LOGWARNING(string messsage)
-	{
-		if (enableLog)
-			Debug.LogWarning(messsage);
-	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//from Source1
 	bool camReady = false;
 	Texture2D currentTexture;
 	IEnumerator initAndWaitForWebCamTexture()
@@ -122,7 +115,9 @@ public class CameraInput : MonoBehaviour  {
 
 				if (device.name != "Null") {
 					webCamTexture = new WebCamTexture (device.name, targetWidth, targetHeight, (int)sampleRate);
+
 					webCamTexture.Play ();
+
 				}
 			}
 
@@ -133,14 +128,16 @@ public class CameraInput : MonoBehaviour  {
 
 			if (webCamTexture.width > 100) {
 				camReady = true;
+				finalHeight = webCamTexture.height;
+				finalWidth = webCamTexture.width;
 				currentTexture = new Texture2D (webCamTexture.width, webCamTexture.height);
 			}
 		}
 
-		//yield return null;
 		StartCoroutine(SendData());
+		yield return null;
 	}
-
+		
 	/// Set the target device (by name or orientation)
 	/// <param name="isFrontFacing">Should the device be forward facing?</param>
 	/// <param name="name">The name of the webcam to select.</param>
@@ -163,19 +160,58 @@ public class CameraInput : MonoBehaviour  {
 		}
 	}
 
+#endif
+
+	//Receiving server must know amount of data to receive
+	//Read a byte array to find it's size
+	int frameByteArrayToByteLength(byte[] frameBytesLength)
+	{
+		int byteLength = BitConverter.ToInt32(frameBytesLength, 0);
+		return byteLength;
+	}
+
+	//Converts integer to byte array
+	void byteLengthToFrameByteArray(int byteLength, byte[] fullBytes)
+	{
+		//Clear old data
+		Array.Clear(fullBytes, 0, fullBytes.Length);
+		//Convert int to bytes
+		byte[] bytesToSendCount = BitConverter.GetBytes(byteLength);
+		//Copy result to fullBytes
+		bytesToSendCount.CopyTo(fullBytes, 0);
+	}
+
+	public bool enableLog;
+	public bool enableLogData = false;
+	void LOG(string messsage)
+	{
+		if (enableLog)
+			Debug.Log(messsage);
+	}
+
+	void LOGDATA(string messsage)
+	{
+		if (enableLogData)
+			Debug.Log(messsage);
+	}
+
+	void LOGWARNING(string messsage)
+	{
+		if (enableLog)
+			Debug.LogWarning(messsage);
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//For setting up sending request
 	public string receiverIPAddress;
 	public int receiverPort = 8010;
 
 #if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
-	StreamSocket receiverClient;
 	StreamSocket receiverSocket;
 #else
 	TcpClient receiverClient;
 	NetworkStream receiverClientStream = null;
 #endif
-	private bool connectionReady = false;
 	private bool stop = false;
 	//This must be the-same with SEND_COUNT on the server
 	const int SEND_RECEIVE_COUNT = 15;
@@ -199,20 +235,15 @@ public class CameraInput : MonoBehaviour  {
 					await receiverSocket.ConnectAsync(receiverHostName, receiverPort.ToString());
 					Stream streamIn = receiverSocket.InputStream.AsStreamForRead();
 					Stream streamOut = receiverSocket.OutputStream.AsStreamForWrite();
-					//reader = new StreamReader(streamIn);
-					//writer = new StreamWriter(streamOut) { AutoFlush = true };
 					binReader = new BinaryReader(streamIn);
 					binWriter = new BinaryWriter(streamOut);
 #else
 					receiverClient.Connect(IPAddress.Parse(receiverIPAddress), receiverPort);
 					receiverClientStream = receiverClient.GetStream();
-					//reader = new StreamReader(receiverClientStream);
-					//writer = new StreamWriter(receiverClientStream);
 					binReader = new BinaryReader(receiverClientStream);
 					binWriter = new BinaryWriter(receiverClientStream);
 #endif
 					LOGWARNING("Connected with receiver");
-					connectionReady = true;
 					isConnected = true;
 				}
 			});
@@ -224,34 +255,39 @@ public class CameraInput : MonoBehaviour  {
 		bool readyToSendNewFrame = true;
 		byte[] frameBytesLength = new byte[SEND_RECEIVE_COUNT];
 
+		int totalPacketsSent = 0;
 		while (!stop)
 		{
 			yield return endOfFrame;
 
+#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
+			byte[] textureBytes = videoPanelScript.compressedImage;
+#else
 			currentTexture.SetPixels (webCamTexture.GetPixels ());
-			//			byte[] textureBytes = currentTexture.EncodeToPNG ();
-			//			byte[] textureBytes = currentTexture.GetRawTextureData();
 			byte[] textureBytes = currentTexture.EncodeToJPG();
+#endif
 			//Fill total byte length to send. Result is stored in frameBytesLength
 			byteLengthToFrameByteArray (textureBytes.Length, frameBytesLength);
-
 			//Set readyToSendNewFrame false
 			readyToSendNewFrame = false;
 
+#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
+			Loom.RunAsync( async () =>
+#else
 			Loom.RunAsync(() =>
+#endif
 				{
 					//Send total byte count first
-					//receiverClientStream.Write(frameBytesLength, 0, frameBytesLength.Length);
 					binWriter.Write(frameBytesLength, 0, frameBytesLength.Length);
 					LOGDATA("Sent Image byte Length: " + frameBytesLength.Length);
 
 					//Send the image bytes
-					//receiverClientStream.Write(textureBytes, 0, textureBytes.Length);
 					binWriter.Write(textureBytes, 0, textureBytes.Length);
 					LOGDATA("Sending Image byte array data : " + textureBytes.Length);
 
 					//Sent. Set readyToSendNewFrame true
 					readyToSendNewFrame = true;
+					totalPacketsSent++;
 				});
 
 			//Wait until we are ready to get new frame(Until we are done sending data)
@@ -263,82 +299,71 @@ public class CameraInput : MonoBehaviour  {
 		}
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//Receiving server must know amount of data to receive
-	//Read a byte array to find it's size
-	int frameByteArrayToByteLength(byte[] frameBytesLength)
-	{
-		int byteLength = BitConverter.ToInt32(frameBytesLength, 0);
-		return byteLength;
-	}
-
-	//Converts integer to byte array
-	void byteLengthToFrameByteArray(int byteLength, byte[] fullBytes)
-	{
-		//Clear old data
-		Array.Clear(fullBytes, 0, fullBytes.Length);
-		//Convert int to bytes
-		byte[] bytesToSendCount = BitConverter.GetBytes(byteLength);
-		//Copy result to fullBytes
-		bytesToSendCount.CopyTo(fullBytes, 0);
-	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Stop everything on GameObject destroy
 	void OnDestroy()
 	{
-		if (webCamTexture != null && webCamTexture.isPlaying)
-			webCamTexture.Stop();
-
-		#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
+#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
+		if (receiverSocket != null)
 		receiverSocket.Dispose();
-		receiverClient.Dispose();
+
+		if(binWriter != null)
 		binWriter.Dispose();
+
+		if(binReader != null)
 		binReader.Dispose();
 
 		receiverSocket = null;
-		receiverClient = null;
-		#else
+#else
+		if (webCamTexture != null && webCamTexture.isPlaying)
+			webCamTexture.Stop();
+		
 		if (receiverClient != null)
 			receiverClient.Close();
 
-		binWriter.Close();
-		binReader.Close();
-		receiverClientStream = null;
-		#endif
+		if(binWriter != null)
+			binWriter.Close();
 
-		stop = true;
-		connectionReady = false;
+		if(binReader != null)
+			binReader.Close();
+		
+		receiverClientStream = null;
 		camReady = false;
+#endif
+		stop = true;
 		LOGWARNING("OnDestroy");
 	}
 
 	// Stop everything on Application quit
 	private void OnApplicationQuit()
 	{
-		if (webCamTexture != null && webCamTexture.isPlaying)
-			webCamTexture.Stop();
-
 #if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
-		receiverSocket.Dispose();
-		receiverClient.Dispose();
-		binWriter.Dispose();
-		binReader.Dispose();
+		if (receiverSocket != null)
+			receiverSocket.Dispose();
+
+		if(binWriter != null)
+			binWriter.Dispose();
+
+		if(binReader != null)
+			binReader.Dispose();
 
 		receiverSocket = null;
-		receiverClient = null;
 #else
+		if (webCamTexture != null && webCamTexture.isPlaying)
+			webCamTexture.Stop();
+		
 		if (receiverClient != null)
 			receiverClient.Close();
 
-		binWriter.Close();
-		binReader.Close();
-		receiverClientStream = null;
-#endif
+		if(binWriter != null)
+			binWriter.Close();
 
-		stop = true;
-		connectionReady = false;
+		if(binReader != null)
+			binReader.Close();
+		
+		receiverClientStream = null;
 		camReady = false;
+#endif
+		stop = true;
 		LOGWARNING("OnApplicationQuit");
 	}
 

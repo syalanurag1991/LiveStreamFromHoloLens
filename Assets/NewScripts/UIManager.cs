@@ -6,47 +6,43 @@ using CustomStreaming;
 
 public class UIManager : MonoBehaviour {
 
+	public bool displayCamOnDevice = false;
+
 	// Import Webcam input object
-	public Camera mainCamera;
 	public GameObject inputDeviceCamera;
 	public GameObject webcamRenderQuad;
 	private CameraInput camInputScript;
+	//private CameraInput2 camInputScript;
 
 	// Use this for initialization
 	void Start () {
 		camInputScript = inputDeviceCamera.GetComponent<CameraInput>();
 		quadRenderer = webcamRenderQuad.GetComponent<Renderer> ();
 
+		quadRenderer.enabled = displayCamOnDevice;
+
 		// Camera feed parameters
-		if (camInputScript.Texture == null) {
+		if (camInputScript.returnTexture == null) {
 			Debug.Log ("Camera not started");
 			feedWidth = camInputScript.targetWidth;
 			feedHeight = camInputScript.targetHeight;
 			camReady = false;
 		}
-			
-		SetFeed ();
-
-		//Apply webcam texture to quad gameobject
-		quadRenderer.material.mainTexture = camInputScript.Texture;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-		// Display the webcam input
-		quadRenderer.material.mainTexture = camInputScript.Texture;
-			
+
 		if (!camReady) {
-			if (camInputScript.Texture == null) {
+			if (camInputScript.returnTexture == null) {
 				Debug.Log ("Camera not started");
 				feedWidth = camInputScript.targetWidth;
 				feedHeight = camInputScript.targetHeight;
 				camReady = false;
 			} else {
 				Debug.Log ("Camera is Working");
-				feedWidth = camInputScript.Texture.width;
-				feedHeight = camInputScript.Texture.height;
+				feedWidth = camInputScript.returnTexture.width;
+				feedHeight = camInputScript.returnTexture.height;
 				camReady = true;
 				SetFeed ();
 			}
@@ -74,9 +70,9 @@ public class UIManager : MonoBehaviour {
 		// Set the webcam-Render-Quad to have the same aspect ratio as the video feed
 		float aspectRatio = feedWidth / feedHeight;
 
-		if (camReady)
+		if (camReady && displayCamOnDevice)
 		{
-
+			
 			webcamRenderQuad.transform.localScale = new Vector3 (-10 * flipDisplayX * aspectRatio * displayHeight, -10 * flipDisplayY * displayHeight, 1.0f);
 			Debug.Log ("Feed Width: " + feedWidth + " Feed Height: " + feedHeight + " Aspect Ratio: " + aspectRatio);
 
@@ -84,7 +80,7 @@ public class UIManager : MonoBehaviour {
 			//For setting up Cam Quad Display
 			Texture2D targetTexture = new Texture2D ((int)feedWidth, (int)feedHeight, TextureFormat.BGRA32, false);
 			quadRenderer.material.mainTexture = targetTexture;
-
+			quadRenderer.material.mainTexture = camInputScript.returnTexture;
 		}
 	}
 

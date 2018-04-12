@@ -89,10 +89,10 @@ public class Loom : MonoBehaviour
 	public static async void RunAsync(Action action)
 	{
 		Initialize();
-		await ThreadPool.RunAsync((workItem) => action());
-		//IAsyncAction asyncAction = await ThreadPool.RunAsync((workItem) => action());
-		//asyncAction.Completed = 
+		//await ThreadPool.RunAsync((workItem) => action());
+		await Task.Run(() => action());
 	}
+
 #else
 	public static Thread RunAsync(Action a)
 	{  
@@ -100,8 +100,10 @@ public class Loom : MonoBehaviour
 		while(numThreads >= maxThreads)  
 		{  
 			Thread.Sleep(1);  
-		}  
+		}
+
 		Interlocked.Increment(ref numThreads);
+		Debug.Log ("Currently active number of threads: " + numThreads.ToString());
 		ThreadPool.QueueUserWorkItem(RunAction, a);
 		return null;
 	} 
