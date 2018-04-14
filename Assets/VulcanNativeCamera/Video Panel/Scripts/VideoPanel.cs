@@ -11,14 +11,22 @@ using VacuumShaders.TextureExtensions;
 
 public class VideoPanel : MonoBehaviour
 {
-    //public RawImage rawImage;
+	//public RawImage rawImage;
 	int countOfFramesApp = 0;
-	//public Renderer camQuadRenderer;
+
+	public bool displayCamFeedOnDevice;
+	public Renderer camQuadRenderer;
+	[Space (10)]
+
+	public bool useTrueRGB;
+	public bool useQuality;
+	public int quality;
+	public int bufferSize;
+	[Space (10)]
 
 	public int resizeToWidth;
 	public int resizeToHeight;
 	public int requestedFrameRate;
-	public int bufferSize;
 
 	int finalWidth;
 	int finalHeight;
@@ -28,7 +36,6 @@ public class VideoPanel : MonoBehaviour
 	int countOfFramesActual = 0;
 	int countOfFramesSent = 0;
 	byte[] stackedImage;
-	Texture2D stackedFrameTexture;
 
 	[HideInInspector]
 	public byte[] compressedImage;
@@ -36,25 +43,28 @@ public class VideoPanel : MonoBehaviour
 	public int compressedImageSize = 0;
 	[HideInInspector]
 	public Texture2D resizedFrameTexture;
+	Texture2D stackedFrameTexture;
+	Texture2D convertFrameTexture;
+
 
 	Queue<byte[]> queueOfFrames = new Queue<byte[]>();
 
 	public void SetResolution(int width, int height, int framerate)
     {
 		//For setting up Cam Quad Display resolution
-//		Texture2D targetTexture = new Texture2D(resizeToWidth, resizeToHeight, TextureFormat.RGB24, false);
-//		camQuadRenderer.material.mainTexture = targetTexture;
-//		Mesh targetMesh = camQuadRenderer.GetComponentInParent<MeshFilter> ().mesh;
-//		var newUV = targetMesh.uv;
-//
-//		for (int i=0; i<newUV.Length; i++) {
-//			if (Mathf.Approximately (newUV [i].x, 1))
-//				newUV[i].x = 0;
-//			else
-//				newUV[i].x = 1;
-//		}
-//
-//		targetMesh.uv = newUV;
+		Texture2D targetTexture = new Texture2D(resizeToWidth, resizeToHeight, TextureFormat.RGB24, false);
+		camQuadRenderer.material.mainTexture = targetTexture;
+		Mesh targetMesh = camQuadRenderer.GetComponentInParent<MeshFilter> ().mesh;
+		var newUV = targetMesh.uv;
+
+		for (int i=0; i<newUV.Length; i++) {
+			if (Mathf.Approximately (newUV [i].x, 1))
+				newUV[i].x = 0;
+			else
+				newUV[i].x = 1;
+		}
+
+		targetMesh.uv = newUV;
 
 		finalWidth = width;
 		finalHeight = height;
@@ -81,30 +91,48 @@ public class VideoPanel : MonoBehaviour
 		byte[] stackedImage = queueOfFrames.Dequeue();
 		stackedFrameTexture.LoadRawTextureData(stackedImage);
 		stackedFrameTexture.Apply();
+
 		status = "Texture Applied";
 
-		//Resize the texture for better frame-rate, it's faster to encode image of smaller size
-		TextureResizePro.ResizePro(stackedFrameTexture, resizeToWidth, resizeToHeight, out resizedFrameTexture, false);
+		if (useTrueRGB) {
+			Graphics.ConvertTexture (stackedFrameTexture, convertFrameTexture);
+			status = "Texture Converted";
+
+			TextureResizePro.ResizePro(convertFrameTexture, resizeToWidth, resizeToHeight, out resizedFrameTexture, false);
+		} else {
+			TextureResizePro.ResizePro(stackedFrameTexture, resizeToWidth, resizeToHeight, out resizedFrameTexture, false);
+		}
+
 		status = "Texture Resized";
 
 		//Encode to JPG for smallest size, Encode to PNG for better quality
-		compressedImage = resizedFrameTexture.EncodeToJPG();
+		if (useQuality) {
+			compressedImage = resizedFrameTexture.EncodeToJPG (quality);	
+		} else {
+			compressedImage = resizedFrameTexture.EncodeToJPG();
+		}
+
 		compressedImageSize = compressedImage.Length;
 		status = "Compression done";
 
 		if (!startSending)
 			startSending = true;
+
+		Resources.UnloadUnusedAssets();
 	}
 
 	void DisplayFrame(){
-		//camQuadRenderer.material.mainTexture = resizedFrameTexture;
-		status = "Texture Loaded";
+		if (displayCamFeedOnDevice) {
+			camQuadRenderer.material.mainTexture = resizedFrameTexture;
+			status = "Texture Loaded";
+		}
 	}
 
-	void Initialize(){
+	void AllocateMemoryToTextures(){
 		startSending = false;
-		stackedFrameTexture = new Texture2D (896, 504, TextureFormat.RGBA32, false);
-		resizedFrameTexture = new Texture2D (resizeToWidth, resizeToHeight, TextureFormat.RGB24, false);
+		stackedFrameTexture = new Texture2D (896, 504, TextureFormat.BGRA32, false);
+		resizedFrameTexture = new Texture2D (resizeToWidth, resizeToHeight, TextureFormat.RGB24 , false);
+		convertFrameTexture = new Texture2D (896, 504, TextureFormat.RGBA32, false);
 	}
 
 	public bool displayLogData = false;
@@ -124,7 +152,8 @@ public class VideoPanel : MonoBehaviour
 
 	void Start()
 	{
-		Initialize();
+		camQuadRenderer.enabled = displayCamFeedOnDevice;
+		AllocateMemoryToTextures();
 		StartCoroutine (DisplayStatus());
 	}
 

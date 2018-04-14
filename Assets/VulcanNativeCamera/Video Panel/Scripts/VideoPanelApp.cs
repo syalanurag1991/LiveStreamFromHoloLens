@@ -20,6 +20,7 @@ public class VideoPanelApp : MonoBehaviour
     VideoPanel _videoPanelUI;
     VideoCapture _videoCapture;
 
+#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
 	void Start()
     {
         //Call this in Start() to ensure that the CameraStreamHelper is already "Awake".
@@ -29,6 +30,7 @@ public class VideoPanelApp : MonoBehaviour
 
         _videoPanelUI = GameObject.FindObjectOfType<VideoPanel>();
     }
+#endif
 
     private void OnDestroy()
     {

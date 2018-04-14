@@ -1,8 +1,8 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\USC_Courses\CSCI599_new\Code\myStuff\HoloLensReceiver\Assets\NewScripts\Receiver2.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\VulcanNativeCamera\Video Panel\Scripts\VideoPanel.cs">
     <Files>
-      <File FileName="..\..\USC_Courses\CSCI599_new\Code\myStuff\HoloLensReceiver\Assets\NewScripts\Receiver2.cs" Line="1" Column="1" />
+      <File FileName="Assets\VulcanNativeCamera\Video Panel\Scripts\VideoPanel.cs" Line="112" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

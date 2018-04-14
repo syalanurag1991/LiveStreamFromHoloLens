@@ -8,7 +8,7 @@
 HoloLens_LiveCameraStream.sln: modified
 GeneratedProjects\UWP\Assembly-CSharp\project.json: modified
 HoloLens_LiveCameraStream\App.cs: C43E907802D96938837C6C9A3A93A36D
-HoloLens_LiveCameraStream\HoloLens_LiveCameraStream.csproj: 20A621C0B8D873C2A760CB20A3B905CF
+HoloLens_LiveCameraStream\HoloLens_LiveCameraStream.csproj: modified
 HoloLens_LiveCameraStream\HoloLens_LiveCameraStream.csproj.user: modified
 HoloLens_LiveCameraStream\Package.appxmanifest: AB6CA84508C7775B6FA6A9E6AF502D26
 HoloLens_LiveCameraStream\project.json: modified
@@ -18,5 +18,6 @@ HoloLens_LiveCameraStream\Assets\Square44x44Logo.scale-200.png: 6C6EF27184ABE9D8
 HoloLens_LiveCameraStream\Assets\Square44x44Logo.targetsize-24_altform-unplated.png: 156637F7B5363E983E7A46D8E533A23D
 HoloLens_LiveCameraStream\Assets\StoreLogo.png: 90BD194CA4A7CFFF3E8B8222229857FB
 HoloLens_LiveCameraStream\Assets\Wide310x150Logo.scale-200.png: C96846A80DF667F87355569CD816192D
+HoloLens_LiveCameraStream\obj\ARM\Debug\HoloLens_LiveCameraStream.csproj.CopyComplete: D41D8CD98F00B204E9800998ECF8427E
 HoloLens_LiveCameraStream\obj\x86\Debug\HoloLens_LiveCameraStream.csproj.CopyComplete: D41D8CD98F00B204E9800998ECF8427E
 HoloLens_LiveCameraStream\Properties\Default.rd.xml: 72EB282657164E79A1C42F6240984826

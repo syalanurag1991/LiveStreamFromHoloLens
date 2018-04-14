@@ -16,6 +16,7 @@ D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.TestRunner.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.Timeline.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.UI.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.UIAutomation.dll
+D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\VacuumShaders.ResizePro.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Vuforia.UnityExtensions.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Unity.Cecil.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Unity.SerializationLogic.dll

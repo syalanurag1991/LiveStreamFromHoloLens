@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 6}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 392}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -68,10 +68,10 @@ MonoBehaviour:
     y: 30
     width: 1536
     height: 690
-  m_MinSize: {x: 681, y: 342}
-  m_MaxSize: {x: 12006, y: 8042}
+  m_MinSize: {x: 683, y: 342}
+  m_MaxSize: {x: 12008, y: 8042}
   vertical: 0
-  controlID: 115
+  controlID: 106
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -90,8 +90,8 @@ MonoBehaviour:
     y: 0
     width: 446
     height: 690
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 342}
   m_MaxSize: {x: 8006, y: 8042}
   vertical: 1
-  controlID: 35
+  controlID: 10
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -398,19 +398,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/NewScripts
+    - Assets/VulcanNativeCamera/Video Panel/Scripts
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/NewScripts
+  - Assets/VulcanNativeCamera/Video Panel/Scripts
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\GitHub\HoloLens-LiveStream
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 11}
-    m_SelectedIDs: d4290000
-    m_LastClickedID: 10708
-    m_ExpandedIDs: 84290000c62900001a2a0000947500009675000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 23}
+    m_SelectedIDs: ac290000
+    m_LastClickedID: 10668
+    m_ExpandedIDs: 00000000a2290000d0290000d8290000042b0000062b000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -438,7 +438,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 
+    m_ExpandedIDs: 00000000a2290000d0290000d8290000042b0000062b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -463,8 +463,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 4a810000
-    m_LastClickedInstanceID: 33098
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000982f0000222b0000
     m_RenameOverlay:
@@ -556,9 +556,9 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 50810000
-    m_LastClickedID: 33104
-    m_ExpandedIDs: 4c4cf8ff0e4df8ff584ff8ff7875f8ff3876f8ff8278f8ffb47ff8ff7280f8ffbe82f8ff1a99f8ffcc99f8ff1a9cf8ff3c20f9ffbc52faff7e53faffd055faff8a5efaff4a5ffaff9c61faff8c6cfaff4c6dfaff9e6ffaffa475faff6476faffb678faff5680faff1681faff6883faff0c8cfaffcc8cfaff1e8ffaffc295faff8296faffd498faffa0a2faff60a3faffb2a5faffa8aefaff68affaffbab1faff7eb8faff3eb9faff90bbfaff96c1faff56c2faffa8c4faffbccafaff7ccbfaffcecdfaff62d5faff22d6faff74d8faff98defaff58dffaffaae1faff2aeffaffe8effaff3af2faff32f8faffeaf8faff3efbfafff414fbffb415fbff0618fbff2c1ffbffec1ffbff3e22fbff7e28fbff3e29fbff922bfbff6c3ffbff2c40fbff8042fbff246dfbffe46dfbff3670fbff7a79fbff3a7afbff8c7cfbffce82fbff8e83fbffe085fbff4e8cfbff0e8dfbff608ffbff9a95fbff5a96fbffac98fbff049ffbffc29ffbff16a2fbffd8ebfbff92ecfbffe2eefbffe0f8fbffa2f9fbfff2fbfbff0e02fcffd002fcff2005fcff3c0bfcfffe0bfcff4e0efcffa814fcff6815fcffb817fcfff21dfcffb21efcff0421fcff1e51fcffe251fcff3254fcff105afcffd45afcff245dfcffbc64fcff8065fcffd067fcfffe6ffcffc070fcff1273fcff3e81fcff0282fcff5484fcff98fbffff00000000562a0000f23f0000ec48000094520000345400007a5800007a6e0000e07b00001e81000032810000
+    m_SelectedIDs: 
+    m_LastClickedID: 0
+    m_ExpandedIDs: 921ffdff4020fdff8c22fdff5e30fdff1c31fdff6633fdff5c86fdff0a87fdff5689fdffee9cfdff9c9dfdffe69ffdff9ca7fdff52a8fdff9eaafdff18fdfdffcefdfdff1a00fefffe12feffae13fefffa15feff283bfeffea3bfeff343efeff1a45feffd045feff1a48feff984dfeff4e4efeff9a50feffe061feff9662feffe064feff026ffeffb86ffeff0472feff4c8afeff028bfeff4c8dfeff389dfeffee9dfeff3aa0feff40affefff6affeff40b2feff00bbfeffaebbfefff8bdfeffa2cefeff56cffeffa0d1feff68dbfeff1edcfeff6adefefff6ecfeffacedfefff6effeff20fefeffd6fefeff2001ffff220fffffd80fffff2212ffff8818ffff3e19ffff881bffffa024ffff5825ffffa227fffff434ffffa235ffffec37ffff0444ffffba44ffff0647ffff5a57ffff1058ffff5a5affffda5fffff8860ffffd462ffff268dffffd48dffff1e90ffffe296ffff9097ffffda99ffff4ea1ffff0ea2ffff5ea4ffffdcc4ffff96c5ffffe2c7ffffa2edffff58eeffffa4f0ffff80fbffff00000000702a0000e02b0000d6330000723700000c3b00008c410000a24d000040510000d4560000905a00007a5c00008a5c0000d8600000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -693,8 +693,8 @@ MonoBehaviour:
   m_ZoomArea:
     m_HRangeLocked: 0
     m_VRangeLocked: 0
-    m_HBaseRangeMin: -381.5
-    m_HBaseRangeMax: 381.5
+    m_HBaseRangeMin: -338.66666
+    m_HBaseRangeMax: 338.66666
     m_VBaseRangeMin: -190.5
     m_VBaseRangeMax: 190.5
     m_HAllowExceedBaseRangeMin: 1

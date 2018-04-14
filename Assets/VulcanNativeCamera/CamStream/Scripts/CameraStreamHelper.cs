@@ -76,7 +76,8 @@ public class CameraStreamHelper : MonoBehaviour
         return videoCapture.GetSupportedFrameRatesForResolution(forResolution).OrderBy(r => r).FirstOrDefault();
     }
 
-    private void Awake()
+#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
+	private void Awake()
     {
         if (instance != null)
         {
@@ -87,6 +88,7 @@ public class CameraStreamHelper : MonoBehaviour
         instance = this;
         VideoCapture.CreateAync(OnVideoCaptureInstanceCreated);
     }
+#endif
 
     private void OnDestroy()
     {

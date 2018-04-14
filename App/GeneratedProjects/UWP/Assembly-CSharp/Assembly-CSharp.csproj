@@ -5,7 +5,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{24eec75b-7b03-4d1d-aa1f-2e1e9057dd25}</ProjectGuid>
+    <ProjectGuid>{960d0b88-87ce-47c9-8f1e-39bbae80063c}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AssemblyCSharpWSA</RootNamespace>
@@ -361,29 +361,29 @@
     <SDKReference Include="WindowsTeam, Version=10.0.16299.0"/>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(UnityProjectDir)Assets\CustomStreaming\CameraInput.cs">
-      <Link>CustomStreaming\CameraInput.cs</Link>
+    <Compile Include="$(UnityProjectDir)Assets\Manager\UIManager.cs">
+      <Link>Manager\UIManager.cs</Link>
     </Compile>
-    <Compile Include="$(UnityProjectDir)Assets\CustomStreaming\DisplayExtraInfo.cs">
-      <Link>CustomStreaming\DisplayExtraInfo.cs</Link>
+    <Compile Include="$(UnityProjectDir)Assets\MoodTracker\FollowGaze.cs">
+      <Link>MoodTracker\FollowGaze.cs</Link>
     </Compile>
-    <Compile Include="$(UnityProjectDir)Assets\CustomStreaming\DisplayFPS.cs">
-      <Link>CustomStreaming\DisplayFPS.cs</Link>
+    <Compile Include="$(UnityProjectDir)Assets\MoodTracker\HealthCube.cs">
+      <Link>MoodTracker\HealthCube.cs</Link>
     </Compile>
-    <Compile Include="$(UnityProjectDir)Assets\CustomStreaming\DisplayInfo.cs">
-      <Link>CustomStreaming\DisplayInfo.cs</Link>
+    <Compile Include="$(UnityProjectDir)Assets\MoodTracker\RotateMe.cs">
+      <Link>MoodTracker\RotateMe.cs</Link>
     </Compile>
-    <Compile Include="$(UnityProjectDir)Assets\CustomStreaming\Frame.cs">
-      <Link>CustomStreaming\Frame.cs</Link>
+    <Compile Include="$(UnityProjectDir)Assets\StreamingOverNetwork\Loom.cs">
+      <Link>StreamingOverNetwork\Loom.cs</Link>
     </Compile>
-    <Compile Include="$(UnityProjectDir)Assets\CustomStreaming\Loom.cs">
-      <Link>CustomStreaming\Loom.cs</Link>
+    <Compile Include="$(UnityProjectDir)Assets\StreamingOverNetwork\SendDataOverTCP.cs">
+      <Link>StreamingOverNetwork\SendDataOverTCP.cs</Link>
     </Compile>
-    <Compile Include="$(UnityProjectDir)Assets\MixedReality\FollowGaze.cs">
-      <Link>MixedReality\FollowGaze.cs</Link>
+    <Compile Include="$(UnityProjectDir)Assets\Utilities\DisplayFPS.cs">
+      <Link>Utilities\DisplayFPS.cs</Link>
     </Compile>
-    <Compile Include="$(UnityProjectDir)Assets\NewScripts\UIManager.cs">
-      <Link>NewScripts\UIManager.cs</Link>
+    <Compile Include="$(UnityProjectDir)Assets\Utilities\DisplayInfo.cs">
+      <Link>Utilities\DisplayInfo.cs</Link>
     </Compile>
     <Compile Include="$(UnityProjectDir)Assets\VulcanNativeCamera\CamStream\Scripts\CameraStreamHelper.cs">
       <Link>VulcanNativeCamera\CamStream\Scripts\CameraStreamHelper.cs</Link>

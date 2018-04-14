@@ -51,14 +51,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\CustomStreaming\CameraInput.cs" />
-     <Compile Include="Assets\CustomStreaming\DisplayExtraInfo.cs" />
-     <Compile Include="Assets\CustomStreaming\DisplayFPS.cs" />
-     <Compile Include="Assets\CustomStreaming\DisplayInfo.cs" />
-     <Compile Include="Assets\CustomStreaming\Frame.cs" />
-     <Compile Include="Assets\CustomStreaming\Loom.cs" />
-     <Compile Include="Assets\MixedReality\FollowGaze.cs" />
-     <Compile Include="Assets\NewScripts\UIManager.cs" />
+     <Compile Include="Assets\Manager\UIManager.cs" />
+     <Compile Include="Assets\MoodTracker\FollowGaze.cs" />
+     <Compile Include="Assets\MoodTracker\HealthCube.cs" />
+     <Compile Include="Assets\MoodTracker\RotateMe.cs" />
+     <Compile Include="Assets\StreamingOverNetwork\Loom.cs" />
+     <Compile Include="Assets\StreamingOverNetwork\SendDataOverTCP.cs" />
+     <Compile Include="Assets\Utilities\DisplayFPS.cs" />
+     <Compile Include="Assets\Utilities\DisplayInfo.cs" />
      <Compile Include="Assets\VulcanNativeCamera\CamStream\Scripts\CameraStreamHelper.cs" />
      <Compile Include="Assets\VulcanNativeCamera\CamStream\Scripts\LocatableCameraUtils.cs" />
      <Compile Include="Assets\VulcanNativeCamera\Video Panel\Scripts\VideoPanel.cs" />
@@ -94,6 +94,12 @@
  <Reference Include="UnityEngine.SpatialTracking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
  </Reference>
+ <Reference Include="VacuumShaders.ResizePro">
+ <HintPath>D:/GitHub/HoloLens-LiveStream/Assets/VacuumShaders/Resize Pro/Scripts/VacuumShaders.ResizePro.dll</HintPath>
+ </Reference>
+ <Reference Include="HoloLensCameraStream">
+ <HintPath>D:/GitHub/HoloLens-LiveStream/Assets/VulcanNativeCamera/CamStream/Plugins/HoloLensCameraStream.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
  </Reference>
@@ -105,12 +111,6 @@
  </Reference>
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
- </Reference>
- <Reference Include="HoloLensCameraStream">
- <HintPath>D:/GitHub/HoloLens-LiveStream/Assets/VulcanNativeCamera/CamStream/Plugins/HoloLensCameraStream.dll</HintPath>
- </Reference>
- <Reference Include="VacuumShaders.ResizePro">
- <HintPath>D:/GitHub/HoloLens-LiveStream/Assets/VacuumShaders/Resize Pro/Scripts/VacuumShaders.ResizePro.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
