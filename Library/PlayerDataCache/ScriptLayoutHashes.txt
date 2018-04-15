@@ -80,7 +80,7 @@ c63db43c730fa2cbb8ca07de15898cb6 UnityEngine.UI.dll:UnityEngine.UI.Toggle
 f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 86d36c43c53541d667100dc90b89cfba UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 1b8c02d0aa82fbf036a2b9b2d713eec3 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
-5f30459f004f018f05a84885483b60c4 Assembly-CSharp.dll:.SendDataOverTCP
+2fb4759c9dbeb1e9e18e26615be07c19 Assembly-CSharp.dll:.SendDataOverTCP
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Loom
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 dbc29a6f2739d277c10da432d73adb6d UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack
@@ -227,7 +227,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 f2bc0e8ebd1c4866c08a59fb3d65a764 Assembly-CSharp.dll:.RotateMe
 9f7647a545c881739e29191ae81a58ce Assembly-CSharp.dll:.HealthCube
-7c599b7ce89085b0bea566430a20adb4 Assembly-CSharp.dll:.UIManager
+2c5271e67cb439d830ce38682df257cd Assembly-CSharp.dll:.UIManager
 26215f135eeb48d8fa1189498c107f6c Vuforia.UnityExtensions.dll:Vuforia.AnchorBehaviour
 0561521e336e270e6e5a9c61387cb838 Vuforia.UnityExtensions.dll:Vuforia.AnchorInputListenerBehaviour
 2e0fd93f459db951da0e2e94e2e33fb7 Vuforia.UnityExtensions.dll:Vuforia.AnchorStageBehaviour

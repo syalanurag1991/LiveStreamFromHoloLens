@@ -1,8 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\VulcanNativeCamera\Video Panel\Scripts\VideoPanel.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Manager\UIManager.cs">
     <Files>
-      <File FileName="Assets\VulcanNativeCamera\Video Panel\Scripts\VideoPanel.cs" Line="112" Column="4" />
+      <File FileName="Assets\VulcanNativeCamera\Video Panel\Scripts\VideoPanel.cs" Line="1" Column="1" />
+      <File FileName="Assets\StreamingOverNetwork\SendDataOverTCP.cs" Line="4" Column="1" />
+      <File FileName="Assets\Manager\UIManager.cs" Line="125" Column="91" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

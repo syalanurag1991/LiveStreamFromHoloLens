@@ -464,13 +464,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f968af7087a0a442a35e4946520f342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  displayCamFeedOnDevice: 0
   camQuadRenderer: {fileID: 23274915986994986}
+  useTrueRGB: 0
+  useQuality: 0
+  quality: 50
+  bufferSize: 1
   resizeToWidth: 256
   resizeToHeight: 256
   requestedFrameRate: 15
-  bufferSize: 1
-  quality: 50
-  useTrueRGB: 0
   compressedImage: 
   compressedImageSize: 0
   resizedFrameTexture: {fileID: 0}

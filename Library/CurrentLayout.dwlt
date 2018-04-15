@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 6}
-  m_MinSize: {x: 950, y: 392}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -40,14 +40,14 @@ MonoBehaviour:
     y: 419
     width: 1090
     height: 271
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 20}
+  m_MinSize: {x: 232, y: 271}
+  m_MaxSize: {x: 10002, y: 10021}
+  m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
   - {fileID: 20}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -68,8 +68,8 @@ MonoBehaviour:
     y: 30
     width: 1536
     height: 690
-  m_MinSize: {x: 683, y: 342}
-  m_MaxSize: {x: 12008, y: 8042}
+  m_MinSize: {x: 683, y: 492}
+  m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
   controlID: 106
 --- !u!114 &4
@@ -117,8 +117,8 @@ MonoBehaviour:
     y: 0
     width: 323
     height: 419
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -208,8 +208,8 @@ MonoBehaviour:
     y: 0
     width: 1090
     height: 690
-  m_MinSize: {x: 406, y: 342}
-  m_MaxSize: {x: 8006, y: 8042}
+  m_MinSize: {x: 406, y: 492}
+  m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
   controlID: 10
 --- !u!114 &10
@@ -254,8 +254,8 @@ MonoBehaviour:
     y: 0
     width: 767
     height: 419
-  m_MinSize: {x: 204, y: 221}
-  m_MaxSize: {x: 4004, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 18}
@@ -398,19 +398,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/VulcanNativeCamera/Video Panel/Scripts
+    - Assets/Manager
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/VulcanNativeCamera/Video Panel/Scripts
+  - Assets/Manager
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\GitHub\HoloLens-LiveStream
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 23}
-    m_SelectedIDs: ac290000
-    m_LastClickedID: 10668
-    m_ExpandedIDs: 00000000a2290000d0290000d8290000042b0000062b000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: f0290000
+    m_LastClickedID: 10736
+    m_ExpandedIDs: 0000000098290000c8290000d0290000122b0000142b000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -438,7 +438,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000a2290000d0290000d8290000042b0000062b0000
+    m_ExpandedIDs: 0000000098290000c8290000d0290000122b0000142b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -558,7 +558,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 921ffdff4020fdff8c22fdff5e30fdff1c31fdff6633fdff5c86fdff0a87fdff5689fdffee9cfdff9c9dfdffe69ffdff9ca7fdff52a8fdff9eaafdff18fdfdffcefdfdff1a00fefffe12feffae13fefffa15feff283bfeffea3bfeff343efeff1a45feffd045feff1a48feff984dfeff4e4efeff9a50feffe061feff9662feffe064feff026ffeffb86ffeff0472feff4c8afeff028bfeff4c8dfeff389dfeffee9dfeff3aa0feff40affefff6affeff40b2feff00bbfeffaebbfefff8bdfeffa2cefeff56cffeffa0d1feff68dbfeff1edcfeff6adefefff6ecfeffacedfefff6effeff20fefeffd6fefeff2001ffff220fffffd80fffff2212ffff8818ffff3e19ffff881bffffa024ffff5825ffffa227fffff434ffffa235ffffec37ffff0444ffffba44ffff0647ffff5a57ffff1058ffff5a5affffda5fffff8860ffffd462ffff268dffffd48dffff1e90ffffe296ffff9097ffffda99ffff4ea1ffff0ea2ffff5ea4ffffdcc4ffff96c5ffffe2c7ffffa2edffff58eeffffa4f0ffff80fbffff00000000702a0000e02b0000d6330000723700000c3b00008c410000a24d000040510000d4560000905a00007a5c00008a5c0000d8600000
+    m_ExpandedIDs: ea82ffffb083fffffa85ffff368efffffc8effff4891ffff8aa0ffff50a1ffff9aa3ffff70aaffff36abffff82adffffb2e9ffff68eaffffb8ecffff98fbffff00000000e02b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

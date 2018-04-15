@@ -163,4 +163,13 @@ public class VideoPanel : MonoBehaviour
 	}
 
 	WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame();
+
+	// Get camera texture
+	public Texture returnTexture
+	{
+		get
+		{
+			return resizedFrameTexture;
+		}
+	}
 }

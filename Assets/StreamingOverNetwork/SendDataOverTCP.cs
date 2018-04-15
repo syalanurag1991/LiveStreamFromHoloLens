@@ -18,15 +18,6 @@ public class SendDataOverTCP : MonoBehaviour  {
 
 	VideoPanel videoPanelScript;
 
-	// Get camera texture
-	public Texture returnTexture
-	{
-		get
-		{
-			return videoPanelScript.resizedFrameTexture;
-		}
-	}
-
 	//Soure1: https://stackoverflow.com/questions/42717713/unity-live-video-streaming
 	//For storing current texture
 	//public RawImage myImage;
@@ -49,8 +40,11 @@ public class SendDataOverTCP : MonoBehaviour  {
 		if (stop) {
 			stop = !videoPanelScript.startSending;
 			if(!stop)
-				StartCoroutine(StartConnection());
+				//StartCoroutine(StartConnection());
+				InitializeCommunicationOverTCP();
 		}
+
+		//ProcessReceivedTextData();
 	}
 
 	//Converts integer to byte array
@@ -85,6 +79,11 @@ public class SendDataOverTCP : MonoBehaviour  {
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void InitializeCommunicationOverTCP(){
+		Debug.Log("Attempting to connect");
+		StartCoroutine(StartConnection());
+	}
+
 	//For setting up sending request
 	public string receiverIPAddress;
 	public int receiverPort = 8010;
@@ -128,6 +127,9 @@ public class SendDataOverTCP : MonoBehaviour  {
 		}
 
 		StartCoroutine(SendData());
+
+		//Start receiving data as well
+		DataReceiver();
 	}
 
 	bool readyToSendNewFrame = true;
@@ -212,4 +214,141 @@ public class SendDataOverTCP : MonoBehaviour  {
 	}
 
 	WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame();
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Receiver
+	void DataReceiver()
+	{
+		Debug.Log ("I am here 14");
+		//While loop in another Thread is fine so we don't block main Unity Thread
+
+		#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
+		Loom.RunAsync( async () =>
+		#else
+		Loom.RunAsync(() =>
+		#endif
+			{
+				Debug.Log ("I am here 15 " + stop.ToString());
+				while (!stop)
+				{
+					//Read Data Size
+					int dataSize = ReadDataPacketSize(SEND_RECEIVE_COUNT);
+					LOGWARNING("Received Image byte Length: " + dataSize);
+
+					//Read Data Packet
+					ReadDataPacket(dataSize);
+				}
+			});
+	}
+
+	//Read incoming header bytes to get size of incoming image
+	private int ReadDataPacketSize(int size)
+	{
+		Debug.Log ("I am here 16");
+		bool disconnected = false;
+
+		//NetworkStream serverStream = client.GetStream();
+		byte[] dataBytesCount = new byte[size];
+		var total = 0;
+		do
+		{
+			Debug.Log("I am here 17");
+			var read = binReader.Read(dataBytesCount, total, size - total);
+			//Debug.Log("Client recieved " + total.ToString() + " bytes");
+			if (read == 0)
+			{
+				disconnected = true;
+				break;
+			}
+			total += read;
+		} while (total != size);
+
+		Debug.Log("I am here 18");
+
+		int byteLength;
+		if (disconnected)
+		{
+			byteLength = -1;
+		}
+		else
+		{
+			//byteLength = frameByteArrayToByteLength(imageBytesCount);
+			byteLength = BitConverter.ToInt32(dataBytesCount, 0);
+		}
+
+		Debug.Log("I am here 19: " + byteLength);
+
+		return byteLength;
+	}
+
+	//Read incoming bytes from stream to prepare image for display
+	//IEnumerator readDataPacket(int size)
+	void ReadDataPacket(int size)
+	{
+		bool disconnected = false;
+
+		//NetworkStream serverStream = client.GetStream();
+		byte[] dataPacket = new byte[size];
+		var total = 0;
+		do
+		{
+			var read = binReader.Read(dataPacket, total, size - total);
+			//Debug.LogFormat("Client recieved {0} bytes", total);
+			if (read == 0)
+			{
+				disconnected = true;
+				break;
+			}
+			total += read;
+		} while (total != size);
+
+		bool readyToReadAgain = false;
+
+		//Display Image
+		if (!disconnected)
+		{
+			StoreReceivedTextDataPackets(dataPacket);
+			//ProcessReceivedTextData(dataPacket);
+			//ProcessReceivedData(dataPacket);
+			readyToReadAgain = true;
+		}
+
+		//Wait until old Image is displayed
+		while (!readyToReadAgain)
+		{
+			#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
+			WaitForSomeTime(0.001);
+			#else
+			System.Threading.Thread.Sleep(1);
+			#endif
+		}
+
+		//yield return null;
+	}
+
+	#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
+	private async void WaitForSomeTime(double timeInSeconds)
+	{
+		await System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(timeInSeconds));
+	}
+	#endif
+
+	public int recevingBufferSize;
+	[HideInInspector]
+	public Queue<byte[]> queueOfReceivedDataPackets = new Queue<byte[]>();
+	public byte[] latestByte;
+	void StoreReceivedTextDataPackets(byte[] receivedDataPacket) {
+
+		latestByte = receivedDataPacket;
+
+		//if (queueOfReceivedDataPackets.Count < recevingBufferSize) {
+		//	queueOfReceivedDataPackets.Enqueue (receivedDataPacket);
+		//} 
+
+		//else {
+		//	queueOfReceivedDataPackets.Clear();
+		//}
+			
+	}
+
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,21 +8,18 @@ public class UIManager : MonoBehaviour {
 	public bool displayCamOnDevice = false;
 
 	// Import Webcam input object
-	public GameObject inputDeviceCamera;
 	public GameObject webcamRenderQuad;
-	private SendDataOverTCP camInputScript;
-
 	public DisplayInfo displayExtraInfo;
+	public SendDataOverTCP sendDataScript;
+	public VideoPanel videoPanelScript;
 
 	// Use this for initialization
 	void Start () {
-		camInputScript = inputDeviceCamera.GetComponent<SendDataOverTCP>();
-		quadRenderer = webcamRenderQuad.GetComponent<Renderer> ();
-
+		quadRenderer = webcamRenderQuad.GetComponent<Renderer>();
 		quadRenderer.enabled = displayCamOnDevice;
 
 		// Camera feed parameters
-		if (camInputScript.returnTexture == null) {
+		if (videoPanelScript.returnTexture == null) {
 			Debug.Log ("Camera not started");
 			camReady = false;
 		}
@@ -31,13 +29,13 @@ public class UIManager : MonoBehaviour {
 	void Update () {
 
 		if (!camReady) {
-			if (camInputScript.returnTexture == null) {
+			if (videoPanelScript.returnTexture == null) {
 				Debug.Log ("Camera not started");
 				camReady = false;
 			} else {
 				Debug.Log ("Camera is Working");
-				feedWidth = camInputScript.returnTexture.width;
-				feedHeight = camInputScript.returnTexture.height;
+				feedWidth = videoPanelScript.returnTexture.width;
+				feedHeight = videoPanelScript.returnTexture.height;
 				camReady = true;
 
 				if (displayCamOnDevice) {
@@ -45,7 +43,9 @@ public class UIManager : MonoBehaviour {
 				}
 			}
 		}
-			
+
+		//ProcessReceivedTextData();
+		ProcessReceivedMoodTrackerData();
 	}
 		
 //////////////////////////////////////////////// SET CAMERA FEED  START /////////////////////////////////////////////////////////////
@@ -78,11 +78,67 @@ public class UIManager : MonoBehaviour {
 			//For setting up Cam Quad Display
 			Texture2D targetTexture = new Texture2D ((int)feedWidth, (int)feedHeight, TextureFormat.BGRA32, false);
 			quadRenderer.material.mainTexture = targetTexture;
-			quadRenderer.material.mainTexture = camInputScript.returnTexture;
+			quadRenderer.material.mainTexture = videoPanelScript.returnTexture;
 		}
 	}
 
 ///////////////////////////////////////////////// SET CAMERA FEED  END //////////////////////////////////////////////////////////////
+
+	void ProcessReceivedTextData()
+	{
+		byte[] dataToBeProcessed;
+		if (!(sendDataScript.queueOfReceivedDataPackets.Count > 0)) {
+			return;
+		}
+
+		dataToBeProcessed = sendDataScript.queueOfReceivedDataPackets.Dequeue();
+		string dataText = System.Text.Encoding.UTF8.GetString(dataToBeProcessed);
+		Debug.Log(dataText);
+	}
+
+	private Vector3 moodTrackerCoordinates;
+	void ProcessReceivedMoodTrackerData()
+	{
+//		byte[] dataToBeProcessed;
+//		if (!(sendDataScript.queueOfReceivedDataPackets.Count > 0)) {
+//			return;
+//		}
+//
+//		dataToBeProcessed = sendDataScript.queueOfReceivedDataPackets.Dequeue();
+
+		byte[] dataToBeProcessed = sendDataScript.latestByte;
+
+		if (dataToBeProcessed.Length == 0)
+			return;
+
+		int PacketDataSize = dataToBeProcessed.Length / 4;
+		byte[] xPositionByte = new byte[PacketDataSize];
+		byte[] yPositionByte = new byte[PacketDataSize];
+		byte[] zPositionByte = new byte[PacketDataSize];
+		byte[] emotionIndexByte = new byte[PacketDataSize];
+
+		//Array.Reverse(dataToBeProcessed);
+
+		Buffer.BlockCopy(dataToBeProcessed, 0, xPositionByte, 0, PacketDataSize);
+		Buffer.BlockCopy(dataToBeProcessed, PacketDataSize, yPositionByte, 0, PacketDataSize);
+		Buffer.BlockCopy(dataToBeProcessed, 2*PacketDataSize, zPositionByte, 0, PacketDataSize);
+		Buffer.BlockCopy(dataToBeProcessed, 3*PacketDataSize, emotionIndexByte, 0, PacketDataSize);
+
+		int xPosition = BitConverter.ToInt32(xPositionByte, 0);
+		int yPosition = BitConverter.ToInt32(yPositionByte, 0);
+		int zPosition = BitConverter.ToInt32(zPositionByte, 0);
+		int emotionIndex = BitConverter.ToInt32(emotionIndexByte, 0);
+
+		moodTrackerCoordinates.x = xPosition / 100.0f;
+		moodTrackerCoordinates.y = yPosition / 100.0f;
+		moodTrackerCoordinates.z = zPosition / 100.0f;
+
+		//SetMoodTrackerGeometry(moodTrackerCoordinates);
+		SetMoodTrackerColor(emotionIndex);
+
+		string receivedMessage = "x = " + xPosition + " y = " + yPosition + " z = " + zPosition + " emotion = " + emotionIndex;
+		Debug.Log(receivedMessage);
+	}
 
 	/////////////////////////////////////////// SET MOOD TRACKER ATTRIBUTES  START //////////////////////////////////////////////////////
 	[HideInInspector] public Vector3 normalizedMoodTrackerCoordinates;

@@ -264,6 +264,12 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 248031911}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &283959574 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114709812537746462, guid: 1cb8d387050ce414dafc3c04aa112fbb,
+    type: 2}
+  m_PrefabInternal: {fileID: 983023239}
+  m_Script: {fileID: 11500000, guid: 4f968af7087a0a442a35e4946520f342, type: 3}
 --- !u!114 &283959575 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114614388762859946, guid: 1cb8d387050ce414dafc3c04aa112fbb,
@@ -476,7 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c56f10ecc6bdc14e9ba60274f52525f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiManager: {fileID: 0}
+  uiManager: {fileID: 871687471}
 --- !u!1 &622881414
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,7 +510,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 622881414}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4, y: 2.4, z: 10}
+  m_LocalPosition: {x: 1.49, y: -0.94, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 605515145}
@@ -615,9 +621,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayCamOnDevice: 0
-  inputDeviceCamera: {fileID: 1471319792}
   webcamRenderQuad: {fileID: 248031911}
   displayExtraInfo: {fileID: 283959575}
+  sendDataScript: {fileID: 1471319794}
+  videoPanelScript: {fileID: 283959574}
   displayHeight: 1
   flipHorizontal: 0
   flipVertical: 0
@@ -787,5 +794,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableLog: 0
   enableLogData: 1
-  receiverIPAddress: 192.168.43.114
+  receiverIPAddress: 192.168.137.250
   receiverPort: 8010
+  recevingBufferSize: 5
