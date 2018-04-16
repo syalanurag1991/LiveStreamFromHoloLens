@@ -682,6 +682,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114709812537746462, guid: 1cb8d387050ce414dafc3c04aa112fbb,
+        type: 2}
+      propertyPath: useQuality
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1cb8d387050ce414dafc3c04aa112fbb, type: 2}
   m_IsPrefabParent: 0
@@ -797,3 +802,4 @@ MonoBehaviour:
   receiverIPAddress: 192.168.137.250
   receiverPort: 8010
   recevingBufferSize: 5
+  latestByte: 

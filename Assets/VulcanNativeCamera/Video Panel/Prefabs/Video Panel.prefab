@@ -471,8 +471,8 @@ MonoBehaviour:
   quality: 50
   bufferSize: 1
   resizeToWidth: 256
-  resizeToHeight: 256
-  requestedFrameRate: 15
+  resizeToHeight: 192
+  requestedFrameRate: 5
   compressedImage: 
   compressedImageSize: 0
   resizedFrameTexture: {fileID: 0}
