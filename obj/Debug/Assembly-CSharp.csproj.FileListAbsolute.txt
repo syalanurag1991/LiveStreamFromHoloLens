@@ -39,6 +39,5 @@ D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.UIAutomation.xml
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.GoogleAudioSpatializer.xml
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.HoloLens.xml
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.SpatialTracking.xml
-D:\GitHub\HoloLens-LiveStream\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 D:\GitHub\HoloLens-LiveStream\obj\Debug\Assembly-CSharp.dll
 D:\GitHub\HoloLens-LiveStream\obj\Debug\Assembly-CSharp.pdb

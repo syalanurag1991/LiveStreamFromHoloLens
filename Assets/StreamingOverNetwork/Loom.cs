@@ -103,7 +103,7 @@ public class Loom : MonoBehaviour
 		}
 
 		Interlocked.Increment(ref numThreads);
-		Debug.Log ("Currently active number of threads: " + numThreads.ToString());
+		//Debug.Log ("Currently active number of threads: " + numThreads.ToString());
 		ThreadPool.QueueUserWorkItem(RunAction, a);
 		return null;
 	} 

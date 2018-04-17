@@ -464,18 +464,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f968af7087a0a442a35e4946520f342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayCamFeedOnDevice: 0
-  camQuadRenderer: {fileID: 23274915986994986}
-  useTrueRGB: 0
-  useQuality: 0
+  uiManagerScript: {fileID: 0}
+  viewFeedOnDevice: 0
+  camDisplayQuad: {fileID: 1360219774844110}
+  useQuality: 1
   quality: 50
   bufferSize: 1
   resizeToWidth: 256
-  resizeToHeight: 192
+  resizeToHeight: 144
   requestedFrameRate: 5
   compressedImage: 
   compressedImageSize: 0
   resizedFrameTexture: {fileID: 0}
+  displayHeightMultiplier: 1
+  flipHorizontal: 0
+  flipVertical: 0
   startSending: 1
   displayLogData: 1
   displayInfo: {fileID: 114928881543005740}

@@ -5,42 +5,37 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour {
 
-	public bool displayCamOnDevice = false;
-
 	// Import Webcam input object
-	public GameObject webcamRenderQuad;
 	public DisplayInfo displayExtraInfo;
-	public SendDataOverTCP sendDataScript;
+	public TCPNetworking tcpNetworkingScript;
 	public VideoPanel videoPanelScript;
+
+	// For checking if camera has started
+	[Space(10)]
+	private bool camReady;
 
 	// Use this for initialization
 	void Start () {
-		quadRenderer = webcamRenderQuad.GetComponent<Renderer>();
-		quadRenderer.enabled = displayCamOnDevice;
 
-		// Camera feed parameters
-		if (videoPanelScript.returnTexture == null) {
-			Debug.Log ("Camera not started");
-			camReady = false;
-		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
 		if (!camReady) {
-			if (videoPanelScript.returnTexture == null) {
+			if (videoPanelScript.GetCameraStatus()) {
+				Debug.Log ("Camera is Working");
+				camReady = true;
+			} else {
 				Debug.Log ("Camera not started");
 				camReady = false;
-			} else {
-				Debug.Log ("Camera is Working");
-				feedWidth = videoPanelScript.returnTexture.width;
-				feedHeight = videoPanelScript.returnTexture.height;
-				camReady = true;
+			}
+		}
 
-				if (displayCamOnDevice) {
-					SetFeed();
-				}
+		if (tcpNetworkingScript.GetNetworkIsNotActive()) {
+			if(videoPanelScript.startSending){
+				tcpNetworkingScript.SetNetworkIsNotActive();
+				tcpNetworkingScript.InitializeCommunicationOverTCP ();
 			}
 		}
 
@@ -48,50 +43,19 @@ public class UIManager : MonoBehaviour {
 		ProcessReceivedMoodTrackerData();
 	}
 		
-//////////////////////////////////////////////// SET CAMERA FEED  START /////////////////////////////////////////////////////////////
-	// Configure Webcam output object
-	[Space(10)]
-	public float displayHeight = 0.54f;
-	public bool flipHorizontal = false;
-	public bool flipVertical = true;
-
-	private Renderer quadRenderer;
-	private float feedWidth;
-	private float feedHeight;
-	private bool camReady;
-
-	public void SetFeed (){
-
-		float flipDisplayX = flipHorizontal ? 1f : -1f;
-		float flipDisplayY = flipVertical ? 1f : -1f;
-
-		// Set the webcam-Render-Quad to have the same aspect ratio as the video feed
-		float aspectRatio = feedWidth / feedHeight;
-
-		if (camReady && displayCamOnDevice)
-		{
-			
-			webcamRenderQuad.transform.localScale = new Vector3 (-10 * flipDisplayX * aspectRatio * displayHeight, -10 * flipDisplayY * displayHeight, 1.0f);
-			Debug.Log ("Feed Width: " + feedWidth + " Feed Height: " + feedHeight + " Aspect Ratio: " + aspectRatio);
-
-			//New code
-			//For setting up Cam Quad Display
-			Texture2D targetTexture = new Texture2D ((int)feedWidth, (int)feedHeight, TextureFormat.BGRA32, false);
-			quadRenderer.material.mainTexture = targetTexture;
-			quadRenderer.material.mainTexture = videoPanelScript.returnTexture;
-		}
+	/////////////////////////////////////////// SET MOOD TRACKER ATTRIBUTES  START //////////////////////////////////////////////////////
+	public void PrepareToSend(byte[] newData){
+		tcpNetworkingScript.UpdateDataToSend(newData);
 	}
-
-///////////////////////////////////////////////// SET CAMERA FEED  END //////////////////////////////////////////////////////////////
 
 	void ProcessReceivedTextData()
 	{
 		byte[] dataToBeProcessed;
-		if (!(sendDataScript.queueOfReceivedDataPackets.Count > 0)) {
+		if (!(tcpNetworkingScript.queueOfReceivedDataPackets.Count > 0)) {
 			return;
 		}
 
-		dataToBeProcessed = sendDataScript.queueOfReceivedDataPackets.Dequeue();
+		dataToBeProcessed = tcpNetworkingScript.queueOfReceivedDataPackets.Dequeue();
 		string dataText = System.Text.Encoding.UTF8.GetString(dataToBeProcessed);
 		Debug.Log(dataText);
 	}
@@ -99,14 +63,7 @@ public class UIManager : MonoBehaviour {
 	private Vector3 moodTrackerCoordinates;
 	void ProcessReceivedMoodTrackerData()
 	{
-//		byte[] dataToBeProcessed;
-//		if (!(sendDataScript.queueOfReceivedDataPackets.Count > 0)) {
-//			return;
-//		}
-//
-//		dataToBeProcessed = sendDataScript.queueOfReceivedDataPackets.Dequeue();
-
-		byte[] dataToBeProcessed = sendDataScript.latestByte;
+		byte[] dataToBeProcessed = tcpNetworkingScript.latestByte;
 
 		if (dataToBeProcessed.Length == 0)
 			return;
@@ -140,12 +97,10 @@ public class UIManager : MonoBehaviour {
 		Debug.Log(receivedMessage);
 	}
 
-	/////////////////////////////////////////// SET MOOD TRACKER ATTRIBUTES  START //////////////////////////////////////////////////////
 	[HideInInspector] public Vector3 normalizedMoodTrackerCoordinates;
 	[HideInInspector] public Vector3 moodTrackerSize;
 	private Color moodTrackerColor;
 	private int indexOfEmotion;
-
 	public void SetMoodTrackerGeometry(Vector3 moodTrackerCoordinates){
 		normalizedMoodTrackerCoordinates.x = moodTrackerCoordinates.x;
 		normalizedMoodTrackerCoordinates.y = moodTrackerCoordinates.y;
@@ -166,13 +121,13 @@ public class UIManager : MonoBehaviour {
 		else if (emotionIndex == 2)
 			moodTrackerColor = Color.magenta; //fear
 		else if (emotionIndex == 3)
-			moodTrackerColor = Color.yellow; //disgust
+			moodTrackerColor = Color.yellow; //disgust //excluded
 		else if (emotionIndex == 4)
 			moodTrackerColor = Color.blue; //sadness
 		else if (emotionIndex == 5)
 			moodTrackerColor = Color.red; //anger
 		else if (emotionIndex == 6)
-			moodTrackerColor = Color.white; //surprise
+			moodTrackerColor = Color.white; //surprise //excluded
 		else
 			moodTrackerColor = Color.black; //neutral
 

@@ -271,7 +271,13 @@ PlayerSettings:
     Android: 1
     iPhone: 1
     tvOS: 1
-  m_BuildTargetGroupLightmapEncodingQuality: []
+  m_BuildTargetGroupLightmapEncodingQuality:
+  - m_BuildTarget: Standalone
+    m_EncodingQuality: 1
+  - m_BuildTarget: XboxOne
+    m_EncodingQuality: 1
+  - m_BuildTarget: PS4
+    m_EncodingQuality: 1
   wiiUTitleID: 0005000011000000
   wiiUGroupID: 00010000
   wiiUCommonSaveSize: 4096
@@ -589,7 +595,7 @@ PlayerSettings:
       BlockedChatMessages: False
       Bluetooth: False
       Chat: False
-      CodeGeneration: False
+      CodeGeneration: True
       EnterpriseAuthentication: False
       HumanInterfaceDevice: False
       InputInjectionBrokered: False
@@ -598,7 +604,7 @@ PlayerSettings:
       Location: False
       Microphone: True
       MusicLibrary: False
-      Objects3D: False
+      Objects3D: True
       PhoneCall: False
       PicturesLibrary: False
       PrivateNetworkClientServer: True

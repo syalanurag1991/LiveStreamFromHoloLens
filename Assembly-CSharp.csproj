@@ -56,7 +56,7 @@
      <Compile Include="Assets\MoodTracker\HealthCube.cs" />
      <Compile Include="Assets\MoodTracker\RotateMe.cs" />
      <Compile Include="Assets\StreamingOverNetwork\Loom.cs" />
-     <Compile Include="Assets\StreamingOverNetwork\SendDataOverTCP.cs" />
+     <Compile Include="Assets\StreamingOverNetwork\TCPNetworking.cs" />
      <Compile Include="Assets\Utilities\DisplayFPS.cs" />
      <Compile Include="Assets\Utilities\DisplayInfo.cs" />
      <Compile Include="Assets\VulcanNativeCamera\CamStream\Scripts\CameraStreamHelper.cs" />

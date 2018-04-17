@@ -11,14 +11,17 @@ using VacuumShaders.TextureExtensions;
 
 public class VideoPanel : MonoBehaviour
 {
+
+	public UIManager uiManagerScript;
+
 	//public RawImage rawImage;
 	int countOfFramesApp = 0;
 
-	public bool displayCamFeedOnDevice;
-	public Renderer camQuadRenderer;
+	//public bool viewFeedOnDevice;
+	public bool viewFeedOnDevice;
+	public GameObject camDisplayQuad;
 	[Space (10)]
 
-	public bool useTrueRGB;
 	public bool useQuality;
 	public int quality;
 	public int bufferSize;
@@ -44,33 +47,54 @@ public class VideoPanel : MonoBehaviour
 	[HideInInspector]
 	public Texture2D resizedFrameTexture;
 	Texture2D stackedFrameTexture;
-	Texture2D convertFrameTexture;
-
 
 	Queue<byte[]> queueOfFrames = new Queue<byte[]>();
 
+	//////////////////////////////////////////////// SET CAMERA FEED  START /////////////////////////////////////////////////////////////
+	// Configure Webcam output object
+	[Space(10)]
+	public float displayHeightMultiplier;
+	public bool flipHorizontal = false;
+	public bool flipVertical = true;
+
+	private Renderer camDisplayQuadRenderer;
+	private bool camReady;
+
 	public void SetResolution(int width, int height, int framerate)
     {
-		//For setting up Cam Quad Display resolution
-		Texture2D targetTexture = new Texture2D(resizeToWidth, resizeToHeight, TextureFormat.RGB24, false);
-		camQuadRenderer.material.mainTexture = targetTexture;
-		Mesh targetMesh = camQuadRenderer.GetComponentInParent<MeshFilter> ().mesh;
-		var newUV = targetMesh.uv;
-
-		for (int i=0; i<newUV.Length; i++) {
-			if (Mathf.Approximately (newUV [i].x, 1))
-				newUV[i].x = 0;
-			else
-				newUV[i].x = 1;
-		}
-
-		targetMesh.uv = newUV;
-
 		finalWidth = width;
 		finalHeight = height;
 		finalFrameRate = framerate;
+
+		if (viewFeedOnDevice) {
+			// Maintain orientation of display
+			float flipDisplayX = flipHorizontal ? 1f : -1f;
+			float flipDisplayY = flipVertical ? 1f : -1f;
+
+			// Set the webcam-Render-Quad to have the same aspect ratio as the video feed
+			float aspectRatio = (float)finalWidth / (float)finalHeight;
+			camDisplayQuad.transform.localScale = new Vector3 (-10 * flipDisplayX * aspectRatio * displayHeightMultiplier, -10 * flipDisplayY * displayHeightMultiplier, 1.0f);
+			Debug.Log ("Feed Width: " + finalWidth + " Feed Height: " + finalHeight + " Aspect Ratio: " + aspectRatio);
+
+			//For setting up Cam Quad Display resolution
+			Texture2D targetTexture = new Texture2D(finalWidth, finalHeight, TextureFormat.RGB24, false);
+			camDisplayQuadRenderer.material.mainTexture = targetTexture;
+			Mesh targetMesh = camDisplayQuadRenderer.GetComponentInParent<MeshFilter> ().mesh;
+			var newUV = targetMesh.uv;
+
+			for (int i=0; i<newUV.Length; i++) {
+				if (Mathf.Approximately (newUV [i].x, 1))
+					newUV[i].x = 0;
+				else
+					newUV[i].x = 1;
+			}
+
+			targetMesh.uv = newUV;	
+		}
     }
 		
+	///////////////////////////////////////////////// SET CAMERA FEED  END //////////////////////////////////////////////////////////////
+
 	public void SetBytes(byte[] image)
     { 
 		countOfFramesActual++;
@@ -94,14 +118,7 @@ public class VideoPanel : MonoBehaviour
 
 		status = "Texture Applied";
 
-		if (useTrueRGB) {
-			Graphics.ConvertTexture (stackedFrameTexture, convertFrameTexture);
-			status = "Texture Converted";
-
-			TextureResizePro.ResizePro(convertFrameTexture, resizeToWidth, resizeToHeight, out resizedFrameTexture, false);
-		} else {
-			TextureResizePro.ResizePro(stackedFrameTexture, resizeToWidth, resizeToHeight, out resizedFrameTexture, false);
-		}
+		TextureResizePro.ResizePro(stackedFrameTexture, resizeToWidth, resizeToHeight, out resizedFrameTexture, false);
 
 		status = "Texture Resized";
 
@@ -112,34 +129,41 @@ public class VideoPanel : MonoBehaviour
 			compressedImage = resizedFrameTexture.EncodeToJPG();
 		}
 
+		uiManagerScript.PrepareToSend(compressedImage);
+
 		compressedImageSize = compressedImage.Length;
-		status = "Compression done";
+		status = "Compression done" + compressedImage.Length;
 
 		if (!startSending)
 			startSending = true;
 
 		Resources.UnloadUnusedAssets();
+		//Debug.Log(status);
 	}
 
 	void DisplayFrame(){
-		if (displayCamFeedOnDevice) {
-			camQuadRenderer.material.mainTexture = resizedFrameTexture;
+		if (viewFeedOnDevice) {
+			camDisplayQuadRenderer.material.mainTexture = stackedFrameTexture;
 			status = "Texture Loaded";
 		}
 	}
 
 	void AllocateMemoryToTextures(){
 		startSending = false;
-		stackedFrameTexture = new Texture2D (896, 504, TextureFormat.BGRA32, false);
 		resizedFrameTexture = new Texture2D (resizeToWidth, resizeToHeight, TextureFormat.RGB24 , false);
-		convertFrameTexture = new Texture2D (896, 504, TextureFormat.RGBA32, false);
+
+		#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
+		stackedFrameTexture = new Texture2D (896, 504, TextureFormat.BGRA32, false);
+		#else
+		stackedFrameTexture = new Texture2D (640, 480, TextureFormat.RGBA32, false);
+		#endif
 	}
 
 	public bool displayLogData = false;
 	public DisplayInfo displayInfo;
 	IEnumerator DisplayStatus(){
 		while (true) {
-			yield return endOfFrame;	
+			yield return new WaitForEndOfFrame();	
 			countOfFramesApp++;
 			if (displayLogData) {
 				string message1 = "Frames: " + countOfFramesApp + "\nWidth: " + finalWidth + "\nHeight: " + finalHeight;
@@ -152,7 +176,11 @@ public class VideoPanel : MonoBehaviour
 
 	void Start()
 	{
-		camQuadRenderer.enabled = displayCamFeedOnDevice;
+		if (viewFeedOnDevice) {
+			camDisplayQuadRenderer = camDisplayQuad.GetComponent<Renderer>();
+			camDisplayQuadRenderer.enabled = viewFeedOnDevice;
+		}
+
 		AllocateMemoryToTextures();
 		StartCoroutine (DisplayStatus());
 	}
@@ -161,15 +189,13 @@ public class VideoPanel : MonoBehaviour
 		PreProcessFrame();
 		DisplayFrame();
 	}
+		
 
-	WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame();
-
-	// Get camera texture
-	public Texture returnTexture
-	{
-		get
-		{
-			return resizedFrameTexture;
+	// Get camera status
+	public bool GetCameraStatus(){
+		if (resizedFrameTexture == null) {
+			return false;
 		}
+		return true;
 	}
 }

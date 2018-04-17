@@ -10,7 +10,7 @@ GeneratedProjects\UWP\Assembly-CSharp\project.json: modified
 HoloLens_LiveCameraStream\App.cs: C43E907802D96938837C6C9A3A93A36D
 HoloLens_LiveCameraStream\HoloLens_LiveCameraStream.csproj: modified
 HoloLens_LiveCameraStream\HoloLens_LiveCameraStream.csproj.user: modified
-HoloLens_LiveCameraStream\Package.appxmanifest: AB6CA84508C7775B6FA6A9E6AF502D26
+HoloLens_LiveCameraStream\Package.appxmanifest: C26FA458969B158D9F20C606FD62FDC0
 HoloLens_LiveCameraStream\project.json: modified
 HoloLens_LiveCameraStream\Assets\SplashScreen.scale-200.png: A85C1D7624B6902CF8CEBD6F0200A826
 HoloLens_LiveCameraStream\Assets\Square150x150Logo.scale-200.png: E02834B4A5DFB97FF8E212C1CACBB084
