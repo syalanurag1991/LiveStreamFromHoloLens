@@ -12,16 +12,19 @@ using VacuumShaders.TextureExtensions;
 public class VideoPanel : MonoBehaviour
 {
 
-	public UIManager uiManagerScript;
-
-	//public RawImage rawImage;
-	int countOfFramesApp = 0;
-
-	//public bool viewFeedOnDevice;
-	public bool viewFeedOnDevice;
+	public GameManager gameManagerScript;
+	[Space(10)]
 	public GameObject camDisplayQuad;
+	public DisplayInfo displayInfo;
+	public DisplayFPS displayFPS;
+	public float displayHeightMultiplier;
+	public bool displayLogData = false;
+	public bool viewFeedOnDevice;
+	public bool flipHorizontal = false;
+	public bool flipVertical = true;
 	[Space (10)]
 
+	public bool startSending = false;
 	public bool useQuality;
 	public int quality;
 	public int bufferSize;
@@ -36,6 +39,7 @@ public class VideoPanel : MonoBehaviour
 	int finalFrameRate;
 
 	string status;
+	int countOfFramesApp = 0;
 	int countOfFramesActual = 0;
 	int countOfFramesSent = 0;
 	byte[] stackedImage;
@@ -52,11 +56,6 @@ public class VideoPanel : MonoBehaviour
 
 	//////////////////////////////////////////////// SET CAMERA FEED  START /////////////////////////////////////////////////////////////
 	// Configure Webcam output object
-	[Space(10)]
-	public float displayHeightMultiplier;
-	public bool flipHorizontal = false;
-	public bool flipVertical = true;
-
 	private Renderer camDisplayQuadRenderer;
 	private bool camReady;
 
@@ -66,13 +65,15 @@ public class VideoPanel : MonoBehaviour
 		finalHeight = height;
 		finalFrameRate = framerate;
 
+		float aspectRatio = (float)finalWidth / (float)finalHeight;
+		resizeToHeight = Mathf.CeilToInt(resizeToWidth/aspectRatio);
+
 		if (viewFeedOnDevice) {
 			// Maintain orientation of display
 			float flipDisplayX = flipHorizontal ? 1f : -1f;
 			float flipDisplayY = flipVertical ? 1f : -1f;
 
 			// Set the webcam-Render-Quad to have the same aspect ratio as the video feed
-			float aspectRatio = (float)finalWidth / (float)finalHeight;
 			camDisplayQuad.transform.localScale = new Vector3 (-10 * flipDisplayX * aspectRatio * displayHeightMultiplier, -10 * flipDisplayY * displayHeightMultiplier, 1.0f);
 			Debug.Log ("Feed Width: " + finalWidth + " Feed Height: " + finalHeight + " Aspect Ratio: " + aspectRatio);
 
@@ -102,7 +103,6 @@ public class VideoPanel : MonoBehaviour
 			queueOfFrames.Enqueue (image);
     }
 
-	public bool startSending = false;
 	public void PreProcessFrame(){
 
 		status = "Starting pre-processing";
@@ -129,7 +129,7 @@ public class VideoPanel : MonoBehaviour
 			compressedImage = resizedFrameTexture.EncodeToJPG();
 		}
 
-		uiManagerScript.PrepareToSend(compressedImage);
+		gameManagerScript.PrepareToSend(compressedImage);
 
 		compressedImageSize = compressedImage.Length;
 		status = "Compression done" + compressedImage.Length;
@@ -159,30 +159,32 @@ public class VideoPanel : MonoBehaviour
 		#endif
 	}
 
-	public bool displayLogData = false;
-	public DisplayInfo displayInfo;
 	IEnumerator DisplayStatus(){
 		while (true) {
 			yield return new WaitForEndOfFrame();	
 			countOfFramesApp++;
-			if (displayLogData) {
-				string message1 = "Frames: " + countOfFramesApp + "\nWidth: " + finalWidth + "\nHeight: " + finalHeight;
-				string message2 = "Status: " + status + "\nCompressed: " + compressedImageSize;
-				string message3 = "Camera FPS: " + finalFrameRate + "\nCamera frames: " + countOfFramesActual + "\nFrames sent: " + countOfFramesSent + "\nBuffered Frames: " + queueOfFrames.Count;
-				displayInfo.ClearAndSetDisplayText (message1 + "\n" + message2 + "\n" + message3);
-			}
+			string message1 = "Frames: " + countOfFramesApp + "\nWidth: " + finalWidth + "\nHeight: " + finalHeight;
+			string message2 = "Status: " + status + "\nCompressed: " + compressedImageSize;
+			string message3 = "Camera FPS: " + finalFrameRate + "\nCamera frames: " + countOfFramesActual + "\nFrames sent: " + countOfFramesSent + "\nBuffered Frames: " + queueOfFrames.Count;
+			displayInfo.ClearAndSetDisplayText (message1 + "\n" + message2 + "\n" + message3);
 		}
 	}
 
 	void Start()
 	{
+		camDisplayQuad.SetActive(viewFeedOnDevice);
 		if (viewFeedOnDevice) {
 			camDisplayQuadRenderer = camDisplayQuad.GetComponent<Renderer>();
-			camDisplayQuadRenderer.enabled = viewFeedOnDevice;
 		}
 
 		AllocateMemoryToTextures();
-		StartCoroutine (DisplayStatus());
+		displayInfo.SetDisplayMode(displayLogData);
+		displayFPS.SetDisplayMode(displayLogData);
+
+		if (displayLogData) {
+			StartCoroutine (DisplayStatus());
+		}
+
 	}
 
 	void Update(){

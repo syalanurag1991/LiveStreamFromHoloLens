@@ -2,10 +2,15 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\StreamingOverNetwork\TCPNetworking.cs">
     <Files>
-      <File FileName="Assets\Manager\UIManager.cs" Line="118" Column="3" />
-      <File FileName="Assets\VulcanNativeCamera\Video Panel\Scripts\VideoPanel.cs" Line="16" Column="2" />
-      <File FileName="Assets\VulcanNativeCamera\Video Panel\Scripts\VideoPanelApp.cs" Line="109" Column="23" />
-      <File FileName="Assets\StreamingOverNetwork\TCPNetworking.cs" Line="14" Column="34" />
+      <File FileName="Assets\VulcanNativeCamera\Video Panel\Scripts\VideoPanel.cs" Line="1" Column="1" />
+      <File FileName="Assets\VulcanNativeCamera\Video Panel\Scripts\VideoPanelApp.cs" Line="1" Column="1" />
+      <File FileName="Assets\StreamingOverNetwork\TCPNetworking.cs" Line="63" Column="7" />
+      <File FileName="Assets\Manager\GameManager.cs" Line="38" Column="55" />
+      <File FileName="..\..\USC_Courses\CSCI599_new\Code\myStuff\HoloLens_Networking\Assets\CustomStreaming\CameraInput.cs" Line="1" Column="1" />
+      <File FileName="Assets\MoodTracker\RotateMe.cs" Line="1" Column="1" />
+      <File FileName="Assets\Utilities\DisplayInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets\Utilities\DisplayFPS.cs" Line="1" Column="1" />
+      <File FileName="Assets\MoodTracker\MoodTracker.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

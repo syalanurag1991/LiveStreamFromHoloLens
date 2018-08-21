@@ -11,9 +11,8 @@ public class DisplayInfo : MonoBehaviour {
 		displayBoard = gameObject.GetComponent<TextMesh> ();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+	public void SetDisplayMode(bool display){
+		gameObject.SetActive(display);
 	}
 
 	public string GetCurrentText () {

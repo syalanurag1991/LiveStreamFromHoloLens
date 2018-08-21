@@ -41,4 +41,8 @@ public class DisplayFPS : MonoBehaviour {
 		fpsText.text = Mathf.Ceil (m_lastFramerate).ToString ();
 	}
 
+	public void SetDisplayMode(bool display){
+		gameObject.SetActive(display);
+	}
+
 }

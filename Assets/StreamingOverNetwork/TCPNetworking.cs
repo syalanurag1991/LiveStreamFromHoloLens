@@ -27,14 +27,55 @@ public class TCPNetworking : MonoBehaviour  {
 	{
 		Application.runInBackground = true;
 		stopCommunication = true;
-
-		//videoPanelScript = FindObjectOfType<VideoPanel>();
+		//startConnection = StartConnection();
 
 		#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
 		receiverSocket = new StreamSocket();
 		#else
 		receiverClient = new TcpClient();
 		#endif
+	}
+
+	float timeCounter = 0.0f;
+	int currentNumberOfPacketsReceived = 0;
+	int previousNumberOfPacketsReceived = -1;
+	float refreshTime = 5.0f;
+	void Update()
+	{
+		//Debug.Log("Number of packets recieved: " + currentNumberOfPacketsReceived + " " + previousNumberOfPacketsReceived);
+
+		if (timeCounter < refreshTime) {
+			timeCounter += Time.deltaTime;
+		} else {
+			
+			if (isConnected) {
+				previousNumberOfPacketsReceived = currentNumberOfPacketsReceived;
+			} 
+
+//			else {
+//				Debug.Log("Killing connection");
+//				KillConnection();
+//
+//				//startConnection = StartConnection();
+//
+//				Debug.Log("Starting Connection");
+//				InitializeCommunicationOverTCP();
+//			}
+
+			currentNumberOfPacketsReceived = 0;
+			timeCounter = 0;
+
+		}
+
+		// Bring to initial state when connectivity is lost
+		// So that client can connect again
+//		if (previousNumberOfPacketsReceived == 0 && currentNumberOfPacketsReceived == 0) {
+//			Debug.Log("No connection");
+//			if (isConnected) {
+//				Debug.Log("Killing connection");
+//				KillConnection();
+//			}
+//		}
 	}
 
 	// Converts integer to byte array
@@ -52,16 +93,25 @@ public class TCPNetworking : MonoBehaviour  {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Start connection over TCP
+	private IEnumerator startConnection = null;
+	int instanceNumber = 0;
 	public void InitializeCommunicationOverTCP(){
+
+		instanceNumber++;
 		LOGWARNING("Attempting to connect");
-		StartCoroutine(StartConnection());
+
+		if (startConnection != null)
+			StopCoroutine(startConnection);
+
+		startConnection = StartConnection();
+		StartCoroutine(startConnection);
 	}
 
 	public bool GetNetworkIsNotActive(){
 		return stopCommunication;
 	}
 
-	public void SetNetworkIsNotActive(){
+	public void SetNetworkToActive(){
 		stopCommunication = false;
 	}
 
@@ -73,8 +123,8 @@ public class TCPNetworking : MonoBehaviour  {
 	const int SEND_RECEIVE_COUNT = 15;
 
 	private bool stopCommunication;
-	private BinaryWriter binWriter;
-	private BinaryReader binReader;
+	private BinaryWriter binWriter = null;
+	private BinaryReader binReader = null;
 
 	#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
 	StreamSocket receiverSocket;
@@ -85,6 +135,7 @@ public class TCPNetworking : MonoBehaviour  {
 
 	bool isConnected = false;
 	IEnumerator StartConnection(){
+		LOGWARNING("Really trying to connect");
 		#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
 		Loom.RunAsync( async () =>
 		#else
@@ -114,10 +165,9 @@ public class TCPNetworking : MonoBehaviour  {
 			});
 
 		while (!isConnected) {
+			Debug.Log("I am here " + instanceNumber);
 			yield return null;
 		}
-
-		//StartCoroutine(SendData());
 
 		// Start receiving data as well
 		ReceiveData();
@@ -152,9 +202,9 @@ public class TCPNetworking : MonoBehaviour  {
 			});
 	}
 
-	// Stop everything on GameObject destroy
-	void OnDestroy()
-	{
+	// To stop sending/receiving on purpose
+	private void KillConnection(){
+
 		#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
 		if (receiverSocket != null)
 		receiverSocket.Dispose();
@@ -170,38 +220,38 @@ public class TCPNetworking : MonoBehaviour  {
 		if (receiverClient != null)
 			receiverClient.Close();
 
-		binWriter.Close();
-		binReader.Close();
+		if(binWriter != null)
+			binWriter.Close();
+
+		if(binReader != null)
+			binReader.Close();
+
+		if(receiverClientStream != null)
+			receiverClientStream.Close();
+
+		receiverClient = null;
 		receiverClientStream = null;
 		#endif
-		stopCommunication = true;
+
+		binWriter = null;
+		binReader = null;
+		isConnected = false;
+		//stopCommunication = true;
+		previousNumberOfPacketsReceived = -1;
+		LOGWARNING("Connection killed");
+	}
+
+	// Stop everything on GameObject destroy
+	void OnDestroy()
+	{
+		KillConnection();
 		LOGWARNING("OnDestroy");
 	}
 
 	// Stop everything on Application quit
 	private void OnApplicationQuit()
 	{
-		#if !UNITY_EDITOR && (UNITY_WSA || NETFX_CORE)
-		if (receiverSocket != null)
-		receiverSocket.Dispose();
-
-		if(binWriter != null)
-		binWriter.Dispose();
-
-		if(binReader != null)
-		binReader.Dispose();
-
-		receiverSocket = null;
-		#else
-		if (receiverClient != null)
-			receiverClient.Close();
-
-		binWriter.Close();
-		binReader.Close();
-		receiverClientStream = null;
-
-		#endif
-		stopCommunication = true;
+		KillConnection();
 		LOGWARNING("OnApplicationQuit");
 	}
 
@@ -227,6 +277,8 @@ public class TCPNetworking : MonoBehaviour  {
 
 					// Read Data Packet
 					ReadDataPacket(dataSize);
+
+					currentNumberOfPacketsReceived++;
 				}
 			});
 	}

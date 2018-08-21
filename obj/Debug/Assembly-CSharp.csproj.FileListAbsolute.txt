@@ -3,7 +3,6 @@ D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Assembly-CSharp.pdb
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\HoloLensCameraStream.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\nunit.framework.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEditor.dll
-D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.Advertisements.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.Analytics.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.GoogleAudioSpatializer.dll
@@ -11,7 +10,6 @@ D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.HoloLens.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.Networking.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.Purchasing.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.SpatialTracking.dll
-D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.StandardEvents.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.TestRunner.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.Timeline.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\UnityEngine.UI.dll
@@ -20,8 +18,8 @@ D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\VacuumShaders.ResizePro.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Vuforia.UnityExtensions.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Unity.Cecil.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Unity.SerializationLogic.dll
-D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Unity.DataContract.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\ExCSS.Unity.dll
+D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Unity.DataContract.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Unity.Legacy.NRefactory.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Unity.UNetWeaver.dll
 D:\GitHub\HoloLens-LiveStream\Temp\bin\Debug\Unity.CecilTools.dll
