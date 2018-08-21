@@ -1,4 +1,5 @@
 Use this project to stream the live feed of HoloLens's PoV camera to your system.
+UPDATE 3: Please don't use Unity 2017.3.x as networking for UWP is broken in those version. This is a known issue (https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/1658). I would recommend not using 2017.4.0x as well.
 UPDATE 2: Real-time data transfer has been implemented which should transfer the frames with almost real-time level lag and latency.
 UPDATE 1: Here is a demo
 https://www.youtube.com/watch?v=SWhR5Ve9z-w
