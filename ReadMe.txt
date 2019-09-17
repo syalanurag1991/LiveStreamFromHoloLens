@@ -4,6 +4,8 @@ UPDATE 2: Real-time data transfer has been implemented which should transfer the
 UPDATE 1: Here is a demo
 https://www.youtube.com/watch?v=SWhR5Ve9z-w
 
+TCP based PC Receiver can be found in "Packages" directory.
+
 STEPS:
 1. Both HoloLens and Unity App should be on the same network
 2. Structure
